@@ -1,10 +1,15 @@
+import { getDevices } from "@/api/v1/device";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Button } from "@/components/ui/button";
 import { CircuitStatus } from "@/components/widgets/CircuitStatus";
 import Gauge from "@/components/widgets/Gauge";
 import { HeatLoss } from "@/components/widgets/HeatLoss";
 import Thermometer from "@/components/widgets/Thermometer";
+import { useAppActions } from "@/store";
 
 const Home = () => {
+  const { resetState } = useAppActions();
+  console.log(getDevices());
   return (
     <>
       <div>
@@ -17,9 +22,15 @@ const Home = () => {
         <CircuitStatus isOpen={true} title="Circuit Status Kernopy" />
         <HeatLoss title="Heatloss value Kernopy" value={80} />
       </div>
+      <Button
+        onClick={() => {
+          resetState();
+        }}
+      >
+        Click Me
+      </Button>
     </>
   );
 };
 
 export default Home;
-
