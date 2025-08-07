@@ -75,7 +75,7 @@ export default function Gauge({ title, value, route, show = 'value', status }: G
         >
             {/* Header */}
             <div className="bg-gray-300 dark:bg-[#222] py-2 rounded-[4px] w-full text-center text-[22px] font-semibold items-center">
-                <h2 className="text-black dark:text-white text-[22px] font-medium">{title}</h2>
+                <h2 className="text-black dark:text-white text-[22px] font-medium px-2">{title}</h2>
             </div>
 
             {/* Gauge */}

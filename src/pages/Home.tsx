@@ -1,34 +1,32 @@
-import { getDevices } from "@/api/v1/device";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Button } from "@/components/ui/button";
-import { CircuitStatus } from "@/components/widgets/CircuitStatus";
+import { useJwt } from "@/store";
+import { useSocket } from "@/hooks/useSocket";
 import Gauge from "@/components/widgets/Gauge";
-import { HeatLoss } from "@/components/widgets/HeatLoss";
 import Thermometer from "@/components/widgets/Thermometer";
-import { useAppActions } from "@/store";
 
 const Home = () => {
-  const { resetState } = useAppActions();
-  console.log(getDevices());
+  const jwt = useJwt();
+  const defaultDeviceId = "eff8f537-3901-4d6b-90fa-643933a3c51c";
+
+  const socketData = useSocket(jwt, defaultDeviceId);
+  const params = socketData?.params || {};
+
   return (
     <>
-      <div>
-        <ModeToggle />
-        Kernopy Web Dashboard Templatee
-      </div>
+      <pre>
+        {socketData ? JSON.stringify(socketData, null, 2) : "Waiting for data..."}
+      </pre>
+
       <div className="flex gap-3">
-        <Gauge title="Gauge Kernopy" value={67} />
-        <Thermometer title="Thermometer Kernopy" unit="°F" value={78} />
-        <CircuitStatus isOpen={true} title="Circuit Status Kernopy" />
-        <HeatLoss title="Heatloss value Kernopy" value={80} />
+        <Gauge
+          title="Pdlite Active Energy"
+          value={Number(params.Active_Energy_Import_kWh ?? 0)}
+        />
+        <Thermometer
+          title="Pdlite Current"
+          value={Number(params.RealTime_Current ?? 0)}
+          unit="F"
+        />
       </div>
-      <Button
-        onClick={() => {
-          resetState();
-        }}
-      >
-        Click Me
-      </Button>
     </>
   );
 };
